@@ -4,18 +4,21 @@ const { expect } = require("@jest/globals");
 
 test("test against simple data set", () => {
   // This simple data set is constructed to have really clear top words.
-  const data = [
-    "Unique words are the only ones that should appear because they are unique.",
-    "Common words shouldn't appear at all. Because they are common.",
-    "Rare words are the most valuable. Because they are rare.",
-  ].map(process.processString);
+  const data = Object.entries({
+    "unique sentence":
+      "Unique words are the only ones that should appear because they are unique.",
+    "common sentence":
+      "Common words shouldn't appear at all. Because they are common.",
+    "rare sentence": "Rare words are the most valuable. Because they are rare.",
+  }).reduce((processedData, [key, value]) => {
+    processedData[key] = process.processString(value);
+    return processedData;
+  }, {});
   const output = solution(data, 1);
   const answer = {
-    0: ["unique"],
-
-    1: ["common"],
-
-    2: ["rare"],
+    "unique sentence": ["unique"],
+    "common sentence": ["common"],
+    "rare sentence": ["rare"],
   };
   expect(output).toEqual(answer);
 });
